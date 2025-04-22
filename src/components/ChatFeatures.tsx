@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { CloudSun, News, Search, Info } from 'lucide-react';
+import { CloudSun, Newspaper, Search, Info } from 'lucide-react';
 
 interface ChatFeatureProps {
   icon: React.ReactNode;
@@ -43,7 +43,7 @@ const ChatFeatures: React.FC<ChatFeaturesProps> = ({ onFeatureClick }) => {
         onClick={() => onFeatureClick("What's the weather in New York?")}
       />
       <ChatFeature
-        icon={<News className="h-5 w-5" />}
+        icon={<Newspaper className="h-5 w-5" />}
         title="News"
         description="Get the latest news headlines"
         onClick={() => onFeatureClick("Show me the latest news")}
