@@ -27,16 +27,31 @@ if ! command -v code &> /dev/null; then
     exit 1
 fi
 
-print_message "Starting project setup..."
+print_message "Starting local project setup..."
 
-# Clone the repository
-print_message "Cloning the repository..."
-git clone "$1" project-name
-cd project-name
+# Create project directory
+PROJECT_NAME="my-lovable-app"
+print_message "Creating project directory: $PROJECT_NAME"
+mkdir -p $PROJECT_NAME
+cd $PROJECT_NAME
 
-# Install dependencies
+# Initialize git repository
+print_message "Initializing git repository..."
+git init
+
+# Initialize package.json
+print_message "Initializing npm project..."
+npm init -y
+
+# Install core dependencies
 print_message "Installing dependencies..."
-npm install
+npm install react react-dom @vitejs/plugin-react-swc vite typescript @types/react @types/react-dom
+
+# Create basic project structure
+print_message "Creating project structure..."
+mkdir -p src/components
+mkdir -p src/pages
+mkdir -p public
 
 # Open VS Code
 print_message "Opening VS Code..."
@@ -48,4 +63,5 @@ npm run dev
 
 print_message "Setup complete! 🎉"
 print_message "The development server should be running at http://localhost:8080"
+print_message "You can now start developing your application!"
 
