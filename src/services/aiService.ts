@@ -50,7 +50,31 @@ export const getAIResponse = async (message: string): Promise<AIChatResponse> =>
     lowercaseMessage.includes('weather report') ||
     lowercaseMessage.includes('weather conditions') ||
     lowercaseMessage.includes('weather updates') ||
-    lowercaseMessage.includes('current temperature')
+    lowercaseMessage.includes('current temperature') ||
+    // New expanded patterns
+    lowercaseMessage.includes('weather of') ||
+    lowercaseMessage.includes('temperature of') ||
+    lowercaseMessage.includes('climate in') ||
+    lowercaseMessage.includes('climate of') ||
+    lowercaseMessage.includes('temperature at') ||
+    lowercaseMessage.includes('current weather in') ||
+    lowercaseMessage.includes('current weather of') ||
+    lowercaseMessage.includes('weather today in') ||
+    lowercaseMessage.includes('weather today at') ||
+    lowercaseMessage.includes('weather now in') ||
+    lowercaseMessage.includes('weather right now in') ||
+    lowercaseMessage.includes('tell me weather of') ||
+    lowercaseMessage.includes('tell me weather in') ||
+    lowercaseMessage.includes('show me weather') ||
+    lowercaseMessage.includes('show weather for') ||
+    lowercaseMessage.includes('get weather for') ||
+    lowercaseMessage.includes('what is temperature in') ||
+    lowercaseMessage.includes('what is temperature of') ||
+    lowercaseMessage.includes('how hot is it in') ||
+    lowercaseMessage.includes('how cold is it in') ||
+    lowercaseMessage.includes('weather status') ||
+    lowercaseMessage.includes('weather condition in') ||
+    lowercaseMessage.includes('weather condition of')
   ) {
     return {
       type: 'weather',
