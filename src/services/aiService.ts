@@ -1,4 +1,3 @@
-
 // This is a mock service for AI chatbot functionality
 
 interface AIChatResponse {
@@ -15,22 +14,43 @@ export const getAIResponse = async (message: string): Promise<AIChatResponse> =>
 
   let lowercaseMessage = message.toLowerCase();
   
-  // Weather detection - improved pattern matching
+  // Enhanced weather detection patterns
   if (
+    // Original patterns
     (lowercaseMessage.includes('weather') && 
      (lowercaseMessage.includes(' in ') || 
       lowercaseMessage.includes(' at ') || 
       lowercaseMessage.includes(' for '))) ||
+    // Temperature patterns
     (lowercaseMessage.includes('temperature') && 
      (lowercaseMessage.includes(' in ') || 
       lowercaseMessage.includes(' at ') || 
       lowercaseMessage.includes(' of '))) ||
+    // Question patterns
     (lowercaseMessage.startsWith('how') && 
-     lowercaseMessage.includes('weather') && 
-     (lowercaseMessage.includes(' in ') || 
-      lowercaseMessage.includes(' at '))) ||
+     lowercaseMessage.includes('weather')) ||
+    // Direct check patterns
     lowercaseMessage.startsWith('check weather') ||
-    lowercaseMessage.startsWith('check the weather')
+    lowercaseMessage.startsWith('check the weather') ||
+    // New patterns for weather queries
+    lowercaseMessage.startsWith('what') && (
+      lowercaseMessage.includes('current weather') ||
+      lowercaseMessage.includes('weather like') ||
+      lowercaseMessage.includes('temperature like')
+    ) ||
+    lowercaseMessage.startsWith('tell me') && (
+      lowercaseMessage.includes('about the weather') ||
+      lowercaseMessage.includes('weather forecast') ||
+      lowercaseMessage.includes('temperature')
+    ) ||
+    // Additional weather-related patterns
+    lowercaseMessage.includes('forecast for') ||
+    lowercaseMessage.includes('forecast in') ||
+    lowercaseMessage.includes('weather forecast') ||
+    lowercaseMessage.includes('weather report') ||
+    lowercaseMessage.includes('weather conditions') ||
+    lowercaseMessage.includes('weather updates') ||
+    lowercaseMessage.includes('current temperature')
   ) {
     return {
       type: 'weather',

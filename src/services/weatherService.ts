@@ -1,4 +1,3 @@
-
 export interface WeatherData {
   location: string;
   temperature: number;
@@ -17,83 +16,61 @@ const WEATHER_API_KEY = ''; // This would be your API key
 export const extractCityFromMessage = (message: string): string => {
   const lowerMessage = message.toLowerCase();
   
-  // Common patterns for weather queries
-  if (lowerMessage.includes('weather in ')) {
-    const parts = message.split('weather in ');
-    if (parts.length > 1) {
-      // Extract city name and remove punctuation
-      return parts[1].trim().replace(/[?.!,;:]/g, '');
+  // Array of patterns to extract city names
+  const patterns = [
+    'weather in ',
+    'weather at ',
+    'weather for ',
+    'weather of ',
+    'temperature in ',
+    'temperature at ',
+    'temperature of ',
+    'how is the weather in ',
+    'check weather of ',
+    'check the weather of ',
+    'check weather in ',
+    'check the weather in ',
+    'what is the weather in ',
+    'what is the weather of ',
+    'what\'s the weather in ',
+    'what\'s the weather of ',
+    'tell me about the weather in ',
+    'tell me about the weather of ',
+    'what is the current weather in ',
+    'what are the weather conditions in ',
+    'weather report for ',
+    'weather forecast for ',
+    'current temperature in ',
+    'temperature right now in '
+  ];
+
+  // Try each pattern
+  for (const pattern of patterns) {
+    if (lowerMessage.includes(pattern)) {
+      const parts = message.split(pattern);
+      if (parts.length > 1) {
+        return parts[1].trim().replace(/[?.!,;:]/g, '');
+      }
     }
   }
   
-  if (lowerMessage.includes('weather at ')) {
-    const parts = message.split('weather at ');
-    if (parts.length > 1) {
-      return parts[1].trim().replace(/[?.!,;:]/g, '');
-    }
-  }
-  
-  if (lowerMessage.includes('weather for ')) {
-    const parts = message.split('weather for ');
-    if (parts.length > 1) {
-      return parts[1].trim().replace(/[?.!,;:]/g, '');
-    }
-  }
-  
-  if (lowerMessage.includes('how is the weather in ')) {
-    const parts = message.split('how is the weather in ');
-    if (parts.length > 1) {
-      return parts[1].trim().replace(/[?.!,;:]/g, '');
-    }
-  }
-
-  if (lowerMessage.includes('check weather of ')) {
-    const parts = message.split('check weather of ');
-    if (parts.length > 1) {
-      return parts[1].trim().replace(/[?.!,;:]/g, '');
-    }
-  }
-
-  if (lowerMessage.includes('check the weather of ')) {
-    const parts = message.split('check the weather of ');
-    if (parts.length > 1) {
-      return parts[1].trim().replace(/[?.!,;:]/g, '');
-    }
-  }
-
-  if (lowerMessage.includes('check weather in ')) {
-    const parts = message.split('check weather in ');
-    if (parts.length > 1) {
-      return parts[1].trim().replace(/[?.!,;:]/g, '');
-    }
-  }
-
-  if (lowerMessage.includes('check the weather in ')) {
-    const parts = message.split('check the weather in ');
-    if (parts.length > 1) {
-      return parts[1].trim().replace(/[?.!,;:]/g, '');
-    }
-  }
-  
-  // Direct city mention extraction - as a fallback
+  // Fallback: Direct city mention extraction
   const directCityPattern = /\b(?:in|at|for|of)\s+([a-zA-Z\s]+)(?:\s|$|[?.!,;:])/i;
   const directMatch = lowerMessage.match(directCityPattern);
   if (directMatch && directMatch[1]) {
     return directMatch[1].trim();
   }
   
-  // If there's just a single word at the end, it might be a city name
+  // Last word fallback
   const words = lowerMessage.split(/\s+/);
   if (words.length > 0) {
     const lastWord = words[words.length - 1].replace(/[?.!,;:]/g, '');
-    // Check if the last word is likely a city name (not a common word)
-    const commonWords = ['weather', 'temperature', 'check', 'know', 'tell', 'what', 'how', 'is', 'the', 'me', 'about'];
+    const commonWords = ['weather', 'temperature', 'check', 'know', 'tell', 'what', 'how', 'is', 'the', 'me', 'about', 'current', 'conditions', 'forecast', 'report'];
     if (!commonWords.includes(lastWord) && lastWord.length > 2) {
       return lastWord;
     }
   }
   
-  // Default to a generic city if none found
   return '';
 };
 
