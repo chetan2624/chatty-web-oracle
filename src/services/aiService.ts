@@ -15,8 +15,23 @@ export const getAIResponse = async (message: string): Promise<AIChatResponse> =>
 
   let lowercaseMessage = message.toLowerCase();
   
-  // Weather detection
-  if (lowercaseMessage.includes('weather') && (lowercaseMessage.includes('in ') || lowercaseMessage.includes('at '))) {
+  // Weather detection - improved pattern matching
+  if (
+    (lowercaseMessage.includes('weather') && 
+     (lowercaseMessage.includes(' in ') || 
+      lowercaseMessage.includes(' at ') || 
+      lowercaseMessage.includes(' for '))) ||
+    (lowercaseMessage.includes('temperature') && 
+     (lowercaseMessage.includes(' in ') || 
+      lowercaseMessage.includes(' at ') || 
+      lowercaseMessage.includes(' of '))) ||
+    (lowercaseMessage.startsWith('how') && 
+     lowercaseMessage.includes('weather') && 
+     (lowercaseMessage.includes(' in ') || 
+      lowercaseMessage.includes(' at '))) ||
+    lowercaseMessage.startsWith('check weather') ||
+    lowercaseMessage.startsWith('check the weather')
+  ) {
     return {
       type: 'weather',
       text: 'I can check the weather for you.',

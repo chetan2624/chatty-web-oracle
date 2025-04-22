@@ -46,6 +46,52 @@ export const extractCityFromMessage = (message: string): string => {
       return parts[1].trim().replace(/[?.!,;:]/g, '');
     }
   }
+
+  if (lowerMessage.includes('check weather of ')) {
+    const parts = message.split('check weather of ');
+    if (parts.length > 1) {
+      return parts[1].trim().replace(/[?.!,;:]/g, '');
+    }
+  }
+
+  if (lowerMessage.includes('check the weather of ')) {
+    const parts = message.split('check the weather of ');
+    if (parts.length > 1) {
+      return parts[1].trim().replace(/[?.!,;:]/g, '');
+    }
+  }
+
+  if (lowerMessage.includes('check weather in ')) {
+    const parts = message.split('check weather in ');
+    if (parts.length > 1) {
+      return parts[1].trim().replace(/[?.!,;:]/g, '');
+    }
+  }
+
+  if (lowerMessage.includes('check the weather in ')) {
+    const parts = message.split('check the weather in ');
+    if (parts.length > 1) {
+      return parts[1].trim().replace(/[?.!,;:]/g, '');
+    }
+  }
+  
+  // Direct city mention extraction - as a fallback
+  const directCityPattern = /\b(?:in|at|for|of)\s+([a-zA-Z\s]+)(?:\s|$|[?.!,;:])/i;
+  const directMatch = lowerMessage.match(directCityPattern);
+  if (directMatch && directMatch[1]) {
+    return directMatch[1].trim();
+  }
+  
+  // If there's just a single word at the end, it might be a city name
+  const words = lowerMessage.split(/\s+/);
+  if (words.length > 0) {
+    const lastWord = words[words.length - 1].replace(/[?.!,;:]/g, '');
+    // Check if the last word is likely a city name (not a common word)
+    const commonWords = ['weather', 'temperature', 'check', 'know', 'tell', 'what', 'how', 'is', 'the', 'me', 'about'];
+    if (!commonWords.includes(lastWord) && lastWord.length > 2) {
+      return lastWord;
+    }
+  }
   
   // Default to a generic city if none found
   return '';

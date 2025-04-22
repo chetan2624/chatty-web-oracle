@@ -64,6 +64,8 @@ const ChatApp: React.FC = () => {
       if (aiResponse.type === 'weather') {
         try {
           const city = extractCityFromMessage(message);
+          console.log("Extracted city:", city); // Debugging
+          
           if (city) {
             const weatherData = await getWeatherForCity(city);
             botMessage = {
