@@ -1,23 +1,24 @@
+
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Robot, Search, LogOut } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { Send, Robot, Search } from 'lucide-react';
 import '../styles/chat.css';
+import { extractCityFromMessage, getWeatherForCity } from '../services/weatherService';
+import WeatherResult from './WeatherResult';
 
 const ChatApp = () => {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [weatherData, setWeatherData] = useState(null);
   const chatBoxRef = useRef(null);
-  const { currentUser, logout } = useAuth();
-  const navigate = useNavigate();
+  const username = "User"; // Default username
 
   useEffect(() => {
-    // Add the initial welcome message with user's name
+    // Add the initial welcome message
     const welcomeMessage = {
       id: 'welcome',
-      text: `Hi ${currentUser.name}! I am your personal chatbot. You can ask me about:
+      text: `Hi ${username}! I am your personal chatbot. You can ask me about:
       
       • Weather information for any city
       • Latest news updates
@@ -30,7 +31,7 @@ const ChatApp = () => {
     };
     
     setMessages([welcomeMessage]);
-  }, [currentUser.name]);
+  }, []);
 
   const getCurrentTime = () => {
     const now = new Date();
@@ -69,13 +70,39 @@ const ChatApp = () => {
         setTimeout(() => {
           setMessages(prev => [...prev, {
             id: Date.now() + 1,
-            text: `Hi ${currentUser.name}! I am your personal chatbot and you can ask me about weather updates, latest news, search for information, or just chat. How can I help you today?`,
+            text: `Hi ${username}! I am your personal chatbot and you can ask me about weather updates, latest news, search for information, or just chat. How can I help you today?`,
             sender: 'bot',
             time: getCurrentTime()
           }]);
           setIsLoading(false);
         }, 1000);
         return;
+      }
+
+      // Check for weather queries
+      if (inputMessage.toLowerCase().includes('weather')) {
+        const city = extractCityFromMessage(inputMessage);
+        if (city) {
+          try {
+            const weatherData = await getWeatherForCity(city);
+            setWeatherData(weatherData);
+            
+            // Add the weather response
+            setMessages(prev => [...prev, {
+              id: Date.now() + 1,
+              text: `Here's the current weather in ${weatherData.location}:`,
+              sender: 'bot',
+              time: getCurrentTime(),
+              type: 'weather',
+              weatherData: weatherData
+            }]);
+            
+            setIsLoading(false);
+            return;
+          } catch (error) {
+            console.error("Weather error:", error);
+          }
+        }
       }
 
       // Regular API request for other messages
@@ -94,8 +121,7 @@ const ChatApp = () => {
         sender: 'bot',
         time: getCurrentTime(),
         type: data.contentType,
-        data: data.contentType === 'weather' ? data.weatherData :
-              data.contentType === 'news' ? data.newsData :
+        data: data.contentType === 'news' ? data.newsData :
               data.contentType === 'search' ? data.searchData : null
       }]);
     } catch (error) {
@@ -112,11 +138,6 @@ const ChatApp = () => {
     }
   };
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
-
   const filteredMessages = messages.filter(message =>
     message.text.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -130,7 +151,7 @@ const ChatApp = () => {
         <h2>AI Assistant</h2>
         <div className="online-indicator"></div>
         <div className="user-info">
-          <span className="user-name">{currentUser.name}</span>
+          <span className="user-name">{username}</span>
         </div>
       </div>
 
@@ -153,6 +174,9 @@ const ChatApp = () => {
           >
             <div className={`${message.sender}-message`}>
               {message.text}
+              {message.type === 'weather' && message.weatherData && (
+                <WeatherResult weatherData={message.weatherData} />
+              )}
               <div className="message-time">{message.time}</div>
             </div>
           </div>

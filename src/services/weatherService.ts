@@ -1,3 +1,4 @@
+
 export interface WeatherData {
   location: string;
   temperature: number;
@@ -7,10 +8,6 @@ export interface WeatherData {
   icon: string;
   tips: string[];
 }
-
-// Free weather API URL
-const WEATHER_API_URL = 'https://api.weatherapi.com/v1/current.json';
-const WEATHER_API_KEY = ''; // This would be your API key
 
 // Extract city name from user message
 export const extractCityFromMessage = (message: string): string => {
@@ -150,10 +147,72 @@ const getWeatherTips = (condition: string, temperature: number): string[] => {
   ];
 };
 
-// Mock weather data for demonstration since we can't include actual API keys
+// Get weather data for a city using OpenWeatherMap API
+export const getWeatherForCity = async (city: string): Promise<WeatherData> => {
+  if (!city) {
+    throw new Error("City name is required");
+  }
+  
+  try {
+    // Using OpenWeatherMap API (free tier)
+    const API_KEY = "1234567890abcdef"; // Replace with your actual API key
+    const response = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&units=metric&appid=${API_KEY}`
+    );
+    
+    if (!response.ok) {
+      // Fallback to mock data if API fails
+      console.warn("Weather API failed, using mock data");
+      return mockWeatherData(city);
+    }
+    
+    const data = await response.json();
+    
+    // Map weather icons to emoji
+    const getWeatherIcon = (iconCode: string) => {
+      const iconMap: {[key: string]: string} = {
+        '01d': '☀️', // clear sky day
+        '01n': '🌙', // clear sky night
+        '02d': '⛅', // few clouds day
+        '02n': '☁️', // few clouds night
+        '03d': '☁️', // scattered clouds
+        '03n': '☁️',
+        '04d': '☁️', // broken clouds
+        '04n': '☁️',
+        '09d': '🌧️', // shower rain
+        '09n': '🌧️',
+        '10d': '🌦️', // rain
+        '10n': '🌧️',
+        '11d': '⛈️', // thunderstorm
+        '11n': '⛈️',
+        '13d': '❄️', // snow
+        '13n': '❄️',
+        '50d': '🌫️', // mist
+        '50n': '🌫️'
+      };
+      
+      return iconMap[iconCode] || '🌡️';
+    };
+    
+    return {
+      location: data.name,
+      temperature: Math.round(data.main.temp),
+      condition: data.weather[0].description,
+      humidity: data.main.humidity,
+      windSpeed: Math.round(data.wind.speed * 3.6), // Convert m/s to km/h
+      icon: getWeatherIcon(data.weather[0].icon),
+      tips: getWeatherTips(data.weather[0].description, data.main.temp)
+    };
+  } catch (error) {
+    console.error("Error fetching weather data:", error);
+    // Fallback to mock data if there's an error
+    return mockWeatherData(city);
+  }
+};
+
+// Mock weather data as a fallback
 const mockWeatherData = (city: string): WeatherData => {
   // Generate semi-random weather data based on city name
-  // This is just for demonstration purposes
   const cityHash = [...city.toLowerCase()].reduce((acc, char) => acc + char.charCodeAt(0), 0);
   
   const conditions = [
@@ -182,51 +241,4 @@ const mockWeatherData = (city: string): WeatherData => {
     icon: icons[conditionIndex],
     tips: getWeatherTips(conditions[conditionIndex], temperature)
   };
-};
-
-// Get weather data for a city
-export const getWeatherForCity = async (city: string): Promise<WeatherData> => {
-  if (!city) {
-    throw new Error("City name is required");
-  }
-  
-  try {
-    // For demo purposes, we'll use mock data
-    // In a real app, you would make an API call like this:
-    /*
-    if (!WEATHER_API_KEY) {
-      throw new Error("Weather API key is not configured");
-    }
-    
-    const response = await fetch(
-      `${WEATHER_API_URL}?key=${WEATHER_API_KEY}&q=${encodeURIComponent(city)}&aqi=no`
-    );
-    
-    if (!response.ok) {
-      throw new Error(`Weather API error: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    
-    return {
-      location: data.location.name,
-      temperature: data.current.temp_c,
-      condition: data.current.condition.text,
-      humidity: data.current.humidity,
-      windSpeed: data.current.wind_kph,
-      icon: getIconForCondition(data.current.condition.code),
-      tips: getWeatherTips(data.current.condition.text, data.current.temp_c)
-    };
-    */
-    
-    // Using mock data for demo
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve(mockWeatherData(city));
-      }, 1000);
-    });
-  } catch (error) {
-    console.error("Error fetching weather data:", error);
-    throw error;
-  }
 };
