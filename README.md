@@ -1,73 +1,83 @@
-# Welcome to your Lovable project
 
-## Project info
+# AI Chatbot - Python Flask Edition
 
-**URL**: https://lovable.dev/projects/47aeba8e-4746-4145-9ddd-5d80d1ca78db
+This is a Python Flask implementation of the AI Chatbot that provides information about weather, news, and general search results.
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- Weather information for cities
+- Latest news headlines
+- Information search capabilities
+- Responsive UI with clean design
+- Mock data for demonstration
 
-**Use Lovable**
+## Installation
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/47aeba8e-4746-4145-9ddd-5d80d1ca78db) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+1. Clone the repository
+```bash
+git clone https://github.com/yourusername/ai-chatbot-python.git
+cd ai-chatbot-python
 ```
 
-**Edit a file directly in GitHub**
+2. Create a virtual environment
+```bash
+python -m venv venv
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+3. Activate the virtual environment
+```bash
+# On Windows
+venv\Scripts\activate
 
-**Use GitHub Codespaces**
+# On Unix or MacOS
+source venv/bin/activate
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+4. Install dependencies
+```bash
+pip install -r requirements.txt
+```
 
-## What technologies are used for this project?
+## Usage
 
-This project is built with:
+1. Start the Flask development server:
+```bash
+python app.py
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+2. Open your browser and go to:
+```
+http://127.0.0.1:5000
+```
 
-## How can I deploy this project?
+## Project Structure
 
-Simply open [Lovable](https://lovable.dev/projects/47aeba8e-4746-4145-9ddd-5d80d1ca78db) and click on Share -> Publish.
+```
+.
+├── app.py                  # Main Flask application
+├── services/               # Service modules
+│   ├── ai_service.py       # AI response generation
+│   ├── news_service.py     # News handling
+│   ├── search_service.py   # Search functionality
+│   └── weather_service.py  # Weather data processing
+├── static/                 # Static assets
+│   ├── css/                # Stylesheets
+│   │   └── styles.css      # Main styles
+│   └── js/                 # JavaScript files
+│       └── main.js         # Client-side functionality
+├── templates/              # HTML templates
+│   └── index.html          # Main page
+└── requirements.txt        # Python dependencies
+```
 
-## Can I connect a custom domain to my Lovable project?
+## Customizing
 
-Yes, you can!
+To connect to real APIs instead of using mock data:
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+1. Get API keys for weather and news services
+2. Modify the respective service files to use the real API endpoints
+3. Update the response processing to match the actual API responses
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## License
+
+MIT

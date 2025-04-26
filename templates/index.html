@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chatbot</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body class="bg-gray-50 h-screen flex flex-col">
+    <div class="flex flex-col h-screen">
+        <!-- Chat Header -->
+        <div class="flex justify-between items-center p-4 border-b bg-white">
+            <div class="flex items-center">
+                <div class="bg-blue-600 rounded-full p-2 mr-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold">AI Assistant</h1>
+                    <p class="text-sm text-gray-500">Ask me about weather, news, or anything else!</p>
+                </div>
+            </div>
+            
+            <button class="p-2 hover:bg-gray-100 rounded-full">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Chat Messages -->
+        <div class="flex-1 overflow-y-auto p-4 chat-container" id="chat-container">
+            <div class="my-8" id="features-container">
+                <h2 class="text-center text-xl font-semibold mb-6">How can I help you today?</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+                    <div class="cursor-pointer hover:shadow-md transition-shadow border rounded-lg" onclick="sendMessage('What\'s the weather in New York?')">
+                        <div class="flex items-center p-4">
+                            <div class="mr-4 bg-blue-100 p-2 rounded-full text-blue-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-medium">Weather</h3>
+                                <p class="text-sm text-gray-500">Check the weather in your city</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cursor-pointer hover:shadow-md transition-shadow border rounded-lg" onclick="sendMessage('Show me the latest news')">
+                        <div class="flex items-center p-4">
+                            <div class="mr-4 bg-blue-100 p-2 rounded-full text-blue-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-medium">News</h3>
+                                <p class="text-sm text-gray-500">Get the latest news headlines</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cursor-pointer hover:shadow-md transition-shadow border rounded-lg" onclick="sendMessage('Search for artificial intelligence')">
+                        <div class="flex items-center p-4">
+                            <div class="mr-4 bg-blue-100 p-2 rounded-full text-blue-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-medium">Search</h3>
+                                <p class="text-sm text-gray-500">Search for information</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cursor-pointer hover:shadow-md transition-shadow border rounded-lg" onclick="sendMessage('What can you do?')">
+                        <div class="flex items-center p-4">
+                            <div class="mr-4 bg-blue-100 p-2 rounded-full text-blue-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-medium">Help</h3>
+                                <p class="text-sm text-gray-500">Learn what I can do</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chat Input -->
+        <div class="flex items-center space-x-2 bg-white p-4 border-t">
+            <input 
+                id="message-input"
+                placeholder="Type a message..." 
+                class="flex-1 border rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onkeydown="if(event.key === 'Enter') sendMessage()"
+            />
+            
+            <button 
+                class="p-2 rounded-full bg-gray-100 hover:bg-gray-200 focus:outline-none" 
+                id="mic-button"
+                onclick="toggleRecording()"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                </svg>
+            </button>
+            
+            <button 
+                id="send-button" 
+                class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 focus:outline-none disabled:opacity-50"
+                onclick="sendMessage()"
+                disabled
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                </svg>
+                Send
+            </button>
+        </div>
+        
+        <!-- Toast Container -->
+        <div id="toast-container" class="fixed top-4 right-4 z-50"></div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
