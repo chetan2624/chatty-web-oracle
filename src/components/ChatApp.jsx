@@ -1,12 +1,29 @@
 
-import React, { useState } from 'react';
-import { Send, Mic } from 'lucide-react';
-import { Button } from './ui/button';
+import React, { useState, useRef, useEffect } from 'react';
+import { Send, Robot } from 'lucide-react';
+import '../styles/chat.css';
 
 const ChatApp = () => {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const chatBoxRef = useRef(null);
+
+  const getCurrentTime = () => {
+    const now = new Date();
+    return `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
+  };
+
+  const scrollToBottom = () => {
+    if (chatBoxRef.current) {
+      chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const handleSendMessage = async () => {
     if (!inputMessage.trim()) return;
@@ -14,7 +31,8 @@ const ChatApp = () => {
     const userMessage = {
       id: Date.now(),
       text: inputMessage,
-      sender: 'user'
+      sender: 'user',
+      time: getCurrentTime()
     };
 
     setMessages(prev => [...prev, userMessage]);
@@ -35,6 +53,7 @@ const ChatApp = () => {
         id: data.id,
         text: data.message,
         sender: 'bot',
+        time: getCurrentTime(),
         type: data.contentType,
         data: data.contentType === 'weather' ? data.weatherData :
               data.contentType === 'news' ? data.newsData :
@@ -47,103 +66,84 @@ const ChatApp = () => {
     }
   };
 
+  const filteredMessages = messages.filter(message =>
+    message.text.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div className="flex h-screen bg-background">
-      {/* Left Sidebar */}
-      <div className="hidden md:flex w-64 flex-col bg-card border-r">
-        <div className="p-4 border-b">
-          <h2 className="font-semibold text-xl">AI Assistant</h2>
+    <div className="container chat-container">
+      <div className="chat-header">
+        <div className="chat-avatar">
+          <Robot />
         </div>
-        <div className="flex-1 p-4">
-          <Button
-            variant="outline"
-            className="w-full justify-start text-left font-normal"
-            onClick={() => setMessages([])}
-          >
-            + New Chat
-          </Button>
-        </div>
+        <h2>AI Assistant</h2>
+        <div className="online-indicator"></div>
       </div>
 
-      {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col max-w-5xl mx-auto w-full">
-        {/* Chat Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
-          {messages.length === 0 ? (
-            <div className="h-full flex items-center justify-center">
-              <div className="text-center space-y-4">
-                <h1 className="text-4xl font-bold text-primary">AI Chat Assistant</h1>
-                <p className="text-muted-foreground">Ask me anything about weather, news, or search for information.</p>
-              </div>
-            </div>
-          ) : (
-            messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex ${
-                  message.sender === 'user' ? 'justify-end' : 'justify-start'
-                }`}
-              >
-                <div
-                  className={`max-w-[80%] rounded-lg p-4 ${
-                    message.sender === 'user'
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-muted'
-                  }`}
-                >
-                  {message.text}
-                </div>
-              </div>
-            ))
-          )}
-          {isLoading && (
-            <div className="flex justify-start">
-              <div className="bg-muted rounded-lg p-4">
-                <div className="flex space-x-2">
-                  <div className="w-2 h-2 bg-primary rounded-full animate-bounce" />
-                  <div className="w-2 h-2 bg-primary rounded-full animate-bounce [animation-delay:0.2s]" />
-                  <div className="w-2 h-2 bg-primary rounded-full animate-bounce [animation-delay:0.4s]" />
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+      <div className="search-container">
+        <input
+          type="text"
+          className="search-input"
+          placeholder="Search messages..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
 
-        {/* Input Area */}
-        <div className="border-t p-4">
-          <div className="flex gap-2 max-w-4xl mx-auto">
-            <Button
-              variant="outline"
-              size="icon"
-              className="shrink-0"
-            >
-              <Mic className="h-4 w-4" />
-            </Button>
-            <div className="flex-1 flex items-center gap-2 bg-background rounded-lg border px-4">
-              <input
-                type="text"
-                value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    handleSendMessage();
-                  }
-                }}
-                placeholder="Type your message..."
-                className="flex-1 bg-transparent border-0 focus:outline-none focus:ring-0 text-base"
-              />
-              <Button
-                variant="ghost"
-                size="icon"
-                disabled={!inputMessage.trim() || isLoading}
-                onClick={handleSendMessage}
-              >
-                <Send className="h-4 w-4" />
-              </Button>
-            </div>
+      <div className="chat-box" ref={chatBoxRef}>
+        <div className="bot-message-container">
+          <div className="bot-message">
+            Hello! How can I help you today?
+            <div className="message-time">Just now</div>
           </div>
         </div>
+        
+        {filteredMessages.map((message) => (
+          <div
+            key={message.id}
+            className={`${message.sender}-message-container`}
+          >
+            <div className={`${message.sender}-message`}>
+              {message.text}
+              <div className="message-time">{message.time}</div>
+            </div>
+          </div>
+        ))}
+
+        {isLoading && (
+          <div className="bot-message-container">
+            <div className="bot-message">
+              <div className="typing-animation">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="input-area">
+        <input
+          type="text"
+          className="message-input"
+          value={inputMessage}
+          onChange={(e) => setInputMessage(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault();
+              handleSendMessage();
+            }
+          }}
+          placeholder="Type a message..."
+        />
+        <button
+          className="send-btn"
+          onClick={handleSendMessage}
+          disabled={!inputMessage.trim() || isLoading}
+        >
+          <Send size={20} />
+        </button>
       </div>
     </div>
   );
