@@ -10,6 +10,7 @@ import SignUp from "./components/SignUp";
 import NotFound from "./pages/NotFound";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Navigation from "./components/Navigation";
 
 const queryClient = new QueryClient();
 
@@ -20,16 +21,19 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/" element={
-              <ProtectedRoute>
-                <ChatApp />
-              </ProtectedRoute>
-            } />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <div className="min-h-screen bg-[#f0f2f5]">
+            <Navigation />
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/" element={
+                <ProtectedRoute>
+                  <ChatApp />
+                </ProtectedRoute>
+              } />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </div>
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>

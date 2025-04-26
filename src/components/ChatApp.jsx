@@ -1,6 +1,5 @@
-
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Robot, LogOut, Search } from 'lucide-react';
+import { Send, Robot, Search, LogOut } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import '../styles/chat.css';
@@ -123,7 +122,7 @@ const ChatApp = () => {
   );
 
   return (
-    <div className="container chat-container">
+    <div className="container chat-container mt-8">
       <div className="chat-header">
         <div className="chat-avatar">
           <Robot />
@@ -132,9 +131,6 @@ const ChatApp = () => {
         <div className="online-indicator"></div>
         <div className="user-info">
           <span className="user-name">{currentUser.name}</span>
-          <button className="logout-btn" onClick={handleLogout} title="Logout">
-            <LogOut size={18} />
-          </button>
         </div>
       </div>
 
