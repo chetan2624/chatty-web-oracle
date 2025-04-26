@@ -1,6 +1,8 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Robot } from 'lucide-react';
+import { Send, Robot, LogOut, Search } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import '../styles/chat.css';
 
 const ChatApp = () => {
@@ -9,6 +11,27 @@ const ChatApp = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const chatBoxRef = useRef(null);
+  const { currentUser, logout } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Add the initial welcome message with user's name
+    const welcomeMessage = {
+      id: 'welcome',
+      text: `Hi ${currentUser.name}! I am your personal chatbot. You can ask me about:
+      
+      • Weather information for any city
+      • Latest news updates
+      • Web search queries
+      • General conversation
+      
+      How can I assist you today?`,
+      sender: 'bot',
+      time: getCurrentTime()
+    };
+    
+    setMessages([welcomeMessage]);
+  }, [currentUser.name]);
 
   const getCurrentTime = () => {
     const now = new Date();
@@ -40,6 +63,23 @@ const ChatApp = () => {
     setIsLoading(true);
 
     try {
+      // Check for greetings
+      const greetings = ['hi', 'hello', 'hey', 'greetings', 'howdy'];
+      if (greetings.some(greeting => inputMessage.toLowerCase().includes(greeting))) {
+        // Add a personalized greeting response
+        setTimeout(() => {
+          setMessages(prev => [...prev, {
+            id: Date.now() + 1,
+            text: `Hi ${currentUser.name}! I am your personal chatbot and you can ask me about weather updates, latest news, search for information, or just chat. How can I help you today?`,
+            sender: 'bot',
+            time: getCurrentTime()
+          }]);
+          setIsLoading(false);
+        }, 1000);
+        return;
+      }
+
+      // Regular API request for other messages
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
@@ -61,9 +101,21 @@ const ChatApp = () => {
       }]);
     } catch (error) {
       console.error('Error:', error);
+      // Add error message
+      setMessages(prev => [...prev, {
+        id: Date.now() + 1,
+        text: "I'm having trouble processing your request. Please try again later.",
+        sender: 'bot',
+        time: getCurrentTime()
+      }]);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
   };
 
   const filteredMessages = messages.filter(message =>
@@ -78,9 +130,16 @@ const ChatApp = () => {
         </div>
         <h2>AI Assistant</h2>
         <div className="online-indicator"></div>
+        <div className="user-info">
+          <span className="user-name">{currentUser.name}</span>
+          <button className="logout-btn" onClick={handleLogout} title="Logout">
+            <LogOut size={18} />
+          </button>
+        </div>
       </div>
 
       <div className="search-container">
+        <Search className="search-icon" size={16} />
         <input
           type="text"
           className="search-input"
@@ -91,13 +150,6 @@ const ChatApp = () => {
       </div>
 
       <div className="chat-box" ref={chatBoxRef}>
-        <div className="bot-message-container">
-          <div className="bot-message">
-            Hello! How can I help you today?
-            <div className="message-time">Just now</div>
-          </div>
-        </div>
-        
         {filteredMessages.map((message) => (
           <div
             key={message.id}

@@ -25,6 +25,7 @@
   margin: 0;
   font-size: 1.2rem;
   font-weight: 600;
+  flex-grow: 1;
 }
 
 .chat-avatar {
@@ -46,6 +47,36 @@
   background: #4CAF50;
   border-radius: 50%;
   margin-left: 10px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.user-name {
+  font-size: 0.9rem;
+  margin-right: 10px;
+  font-weight: 500;
+}
+
+.logout-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.logout-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .chat-box {
@@ -75,6 +106,7 @@
   max-width: 70%;
   font-size: 0.95rem;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  white-space: pre-line;
 }
 
 .bot-message {
@@ -85,6 +117,7 @@
   max-width: 70%;
   font-size: 0.95rem;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  white-space: pre-line;
 }
 
 .message-time {
@@ -136,16 +169,31 @@
   transform: scale(1.05);
 }
 
+.send-btn:disabled {
+  background: #c1c1c1;
+  transform: none;
+  cursor: not-allowed;
+}
+
 .search-container {
   padding: 15px;
   border-bottom: 1px solid #eaeaea;
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 25px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #777;
 }
 
 .search-input {
   width: 100%;
   border: none;
   background: #f0f2f5;
-  padding: 10px 15px;
+  padding: 10px 15px 10px 35px;
   border-radius: 20px;
   font-size: 0.9rem;
 }
@@ -155,3 +203,45 @@
   box-shadow: 0 0 0 2px rgba(78, 84, 200, 0.2);
 }
 
+.typing-animation {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.typing-animation span {
+  width: 8px;
+  height: 8px;
+  background-color: #3b82f6;
+  border-radius: 50%;
+  animation: pulse 1.2s infinite ease-in-out;
+}
+
+.typing-animation span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-animation span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(0.6);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Loading spinner for auth */
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 1.2rem;
+  color: #4e54c8;
+}

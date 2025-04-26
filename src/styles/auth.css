@@ -1,0 +1,123 @@
+
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+  padding: 20px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 450px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  padding-bottom: 20px;
+}
+
+.auth-header {
+  background: #4e54c8;
+  background: linear-gradient(to right, #4e54c8, #8f94fb);
+  color: white;
+  padding: 25px 20px;
+  text-align: center;
+}
+
+.auth-avatar {
+  width: 60px;
+  height: 60px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 15px;
+  color: #4e54c8;
+  font-size: 2rem;
+}
+
+.auth-header h2 {
+  margin: 0;
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+.auth-form {
+  padding: 20px 30px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #4e54c8;
+  box-shadow: 0 0 0 2px rgba(78, 84, 200, 0.2);
+}
+
+.auth-button {
+  width: 100%;
+  background: #4e54c8;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.auth-button:hover {
+  background: #3f44a9;
+}
+
+.auth-button:disabled {
+  background: #9fa0b8;
+  cursor: not-allowed;
+}
+
+.auth-footer {
+  text-align: center;
+  padding: 0 30px;
+  color: #666;
+}
+
+.auth-footer a {
+  color: #4e54c8;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+.auth-error {
+  background-color: #fee;
+  color: #d33;
+  padding: 10px 15px;
+  border-radius: 6px;
+  margin: 15px 30px 0;
+  font-size: 0.9rem;
+}
