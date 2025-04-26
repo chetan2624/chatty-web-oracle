@@ -1,8 +1,7 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Robot, Search } from 'lucide-react';
 import '../styles/chat.css';
-import { extractCityFromMessage, getWeatherForCity } from '../services/weatherService';
+import { extractCityFromMessage, getWeatherForCity } from '../services/weather/weatherService';
 import WeatherResult from './WeatherResult';
 
 const ChatApp = () => {
