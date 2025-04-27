@@ -19,15 +19,19 @@ const Login = () => {
 
     // Get users from localStorage
     const users = JSON.parse(localStorage.getItem('chatUsers') || '[]');
+    console.log("Retrieved users:", users);
+    console.log("Attempting to login with:", email);
     
     // Find user with matching email and password
     const user = users.find(u => u.email === email && u.password === password);
     
     if (user) {
+      console.log("Login successful for user:", user.name);
       // Login successful
       login(user);
       navigate('/');
     } else {
+      console.log("Login failed - user not found or password mismatch");
       setError('Invalid email or password');
     }
     

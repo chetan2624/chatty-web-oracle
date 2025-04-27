@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../styles/chat.css';
 import ChatHeader from './chat/ChatHeader';
-import SearchBar from './chat/SearchBar';
 import MessageList from './chat/MessageList';
 import ChatInput from './chat/ChatInput';
 import { extractCityFromMessage, getWeatherForCity } from '../services/weatherService';
@@ -14,7 +13,6 @@ const ChatApp = () => {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
   const chatBoxRef = useRef(null);
   
   // Use auth context to get the current user
@@ -178,17 +176,15 @@ const ChatApp = () => {
     }
   };
 
-  const filteredMessages = messages.filter(message =>
-    message.text.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // No more filtered messages since we removed search functionality
+  const displayMessages = messages;
 
   return (
     <div className="container chat-container mt-8">
       <ChatHeader username={username} />
-      <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       
       <div className="chat-box" ref={chatBoxRef}>
-        <MessageList messages={filteredMessages} isLoading={isLoading} />
+        <MessageList messages={displayMessages} isLoading={isLoading} />
       </div>
 
       <ChatInput

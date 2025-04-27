@@ -26,10 +26,12 @@ const WeatherResult = ({ weatherData }) => {
       </div>
       
       <div className="weather-tips">
-        <div className="weather-tip">
-          <span className="tip-icon">💡</span>
-          {weatherData.tips[0]}
-        </div>
+        {weatherData.tips.map((tip, index) => (
+          <div key={index} className="weather-tip">
+            <span className="tip-icon">💡</span>
+            {tip}
+          </div>
+        ))}
       </div>
     </div>
   );
