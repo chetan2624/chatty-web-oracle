@@ -245,3 +245,65 @@
   font-size: 1.2rem;
   color: #4e54c8;
 }
+
+/* Weather card styling */
+.weather-card {
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-top: 0.5rem;
+}
+
+.weather-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.weather-icon {
+  font-size: 2rem;
+  margin-right: 0.5rem;
+}
+
+.weather-location {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.weather-temp {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.weather-condition {
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+}
+
+.weather-details {
+  display: flex;
+  margin-top: 0.75rem;
+  color: #4b5563;
+}
+
+.weather-detail {
+  flex: 1;
+}
+
+.weather-tips {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.weather-tip {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.tip-icon {
+  color: #3b82f6;
+  margin-right: 0.5rem;
+}

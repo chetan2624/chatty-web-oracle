@@ -95,35 +95,3 @@
 .typing-animation span:nth-child(3) {
   animation-delay: 0.4s;
 }
-
-.message-enter {
-  opacity: 0;
-  transform: translateY(10px);
-}
-
-.message-enter-active {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 300ms, transform 300ms;
-}
-
-.chat-container {
-  max-height: calc(100vh - 180px);
-}
-
-.message-content a {
-  color: theme('colors.blue.500');
-  text-decoration: underline;
-}
-
-.search-result {
-  border-left: 3px solid theme('colors.purple.500');
-}
-
-.news-result {
-  border-left: 3px solid theme('colors.blue.500');
-}
-
-.weather-result {
-  border-left: 3px solid theme('colors.orange.500');
-}
