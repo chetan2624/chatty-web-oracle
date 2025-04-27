@@ -1,8 +1,10 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Robot, Search } from 'lucide-react';
 import '../styles/chat.css';
-import { extractCityFromMessage, getWeatherForCity } from '../services/weather/weatherService';
+import { extractCityFromMessage, getWeatherForCity } from '../services/weatherService';
 import WeatherResult from './WeatherResult';
+import { useAuth } from '../contexts/AuthContext';
 
 const ChatApp = () => {
   const [messages, setMessages] = useState([]);
@@ -11,7 +13,8 @@ const ChatApp = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [weatherData, setWeatherData] = useState(null);
   const chatBoxRef = useRef(null);
-  const username = "User"; // Default username
+  const { currentUser } = useAuth();
+  const username = currentUser?.name || "User";
 
   useEffect(() => {
     // Add the initial welcome message
@@ -30,7 +33,7 @@ const ChatApp = () => {
     };
     
     setMessages([welcomeMessage]);
-  }, []);
+  }, [username]);
 
   const getCurrentTime = () => {
     const now = new Date();
