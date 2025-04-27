@@ -1,23 +1,23 @@
-import React, { useState, useRef, useEffect } from 'react';
-import '../styles/chat.css';
-import { extractCityFromMessage, getWeatherForCity } from '../services/weatherService';
-import { useAuth } from '../contexts/AuthContext';
 
+import React, { useState, useEffect, useRef } from 'react';
+import '../styles/chat.css';
 import ChatHeader from './chat/ChatHeader';
 import SearchBar from './chat/SearchBar';
 import MessageList from './chat/MessageList';
 import ChatInput from './chat/ChatInput';
+import { extractCityFromMessage, getWeatherForCity } from '../services/weatherService';
 
 const ChatApp = () => {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [weatherData, setWeatherData] = useState(null);
   const chatBoxRef = useRef(null);
-  const { currentUser } = useAuth();
-  const username = currentUser?.name || "User";
+  
+  // Set a default username
+  const username = "User";
 
+  // Add welcome message on component mount
   useEffect(() => {
     const welcomeMessage = {
       id: 'welcome',
@@ -85,7 +85,6 @@ const ChatApp = () => {
         if (city) {
           try {
             const weatherData = await getWeatherForCity(city);
-            setWeatherData(weatherData);
             
             setMessages(prev => [...prev, {
               id: Date.now() + 1,
@@ -104,24 +103,17 @@ const ChatApp = () => {
         }
       }
 
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ message: inputMessage })
-      });
-
-      const data = await response.json();
-      setMessages(prev => [...prev, {
-        id: data.id,
-        text: data.message,
-        sender: 'bot',
-        time: getCurrentTime(),
-        type: data.contentType,
-        data: data.contentType === 'news' ? data.newsData :
-              data.contentType === 'search' ? data.searchData : null
-      }]);
+      // Mock API response
+      setTimeout(() => {
+        setMessages(prev => [...prev, {
+          id: Date.now() + 1,
+          text: `I received your message: "${inputMessage}". This is a simulated response as the API endpoint is not connected.`,
+          sender: 'bot',
+          time: getCurrentTime()
+        }]);
+        setIsLoading(false);
+      }, 1000);
+      
     } catch (error) {
       console.error('Error:', error);
       setMessages(prev => [...prev, {
@@ -130,7 +122,6 @@ const ChatApp = () => {
         sender: 'bot',
         time: getCurrentTime()
       }]);
-    } finally {
       setIsLoading(false);
     }
   };
