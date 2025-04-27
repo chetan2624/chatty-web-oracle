@@ -1,9 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Robot, Search } from 'lucide-react';
 import '../styles/chat.css';
 import { extractCityFromMessage, getWeatherForCity } from '../services/weatherService';
-import WeatherResult from './WeatherResult';
 import { useAuth } from '../contexts/AuthContext';
+
+import ChatHeader from './chat/ChatHeader';
+import SearchBar from './chat/SearchBar';
+import MessageList from './chat/MessageList';
+import ChatInput from './chat/ChatInput';
 
 const ChatApp = () => {
   const [messages, setMessages] = useState([]);
@@ -138,79 +141,19 @@ const ChatApp = () => {
 
   return (
     <div className="container chat-container mt-8">
-      <div className="chat-header">
-        <div className="chat-avatar">
-          <Robot />
-        </div>
-        <h2>AI Assistant</h2>
-        <div className="online-indicator"></div>
-        <div className="user-info">
-          <span className="user-name">{username}</span>
-        </div>
-      </div>
-
-      <div className="search-container">
-        <Search className="search-icon" size={16} />
-        <input
-          type="text"
-          className="search-input"
-          placeholder="Search messages..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
-
+      <ChatHeader username={username} />
+      <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      
       <div className="chat-box" ref={chatBoxRef}>
-        {filteredMessages.map((message) => (
-          <div
-            key={message.id}
-            className={`${message.sender}-message-container`}
-          >
-            <div className={`${message.sender}-message`}>
-              {message.text}
-              {message.type === 'weather' && message.weatherData && (
-                <WeatherResult weatherData={message.weatherData} />
-              )}
-              <div className="message-time">{message.time}</div>
-            </div>
-          </div>
-        ))}
-
-        {isLoading && (
-          <div className="bot-message-container">
-            <div className="bot-message">
-              <div className="typing-animation">
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-            </div>
-          </div>
-        )}
+        <MessageList messages={filteredMessages} isLoading={isLoading} />
       </div>
 
-      <div className="input-area">
-        <input
-          type="text"
-          className="message-input"
-          value={inputMessage}
-          onChange={(e) => setInputMessage(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              e.preventDefault();
-              handleSendMessage();
-            }
-          }}
-          placeholder="Type a message..."
-        />
-        <button
-          className="send-btn"
-          onClick={handleSendMessage}
-          disabled={!inputMessage.trim() || isLoading}
-        >
-          <Send size={20} />
-        </button>
-      </div>
+      <ChatInput
+        inputMessage={inputMessage}
+        setInputMessage={setInputMessage}
+        handleSendMessage={handleSendMessage}
+        isLoading={isLoading}
+      />
     </div>
   );
 };
