@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Robot, Search } from 'lucide-react';
 import '../styles/chat.css';
@@ -17,7 +16,6 @@ const ChatApp = () => {
   const username = currentUser?.name || "User";
 
   useEffect(() => {
-    // Add the initial welcome message
     const welcomeMessage = {
       id: 'welcome',
       text: `Hi ${username}! I am your personal chatbot. You can ask me about:
@@ -65,10 +63,8 @@ const ChatApp = () => {
     setIsLoading(true);
 
     try {
-      // Check for greetings
       const greetings = ['hi', 'hello', 'hey', 'greetings', 'howdy'];
       if (greetings.some(greeting => inputMessage.toLowerCase().includes(greeting))) {
-        // Add a personalized greeting response
         setTimeout(() => {
           setMessages(prev => [...prev, {
             id: Date.now() + 1,
@@ -81,7 +77,6 @@ const ChatApp = () => {
         return;
       }
 
-      // Check for weather queries
       if (inputMessage.toLowerCase().includes('weather')) {
         const city = extractCityFromMessage(inputMessage);
         if (city) {
@@ -89,7 +84,6 @@ const ChatApp = () => {
             const weatherData = await getWeatherForCity(city);
             setWeatherData(weatherData);
             
-            // Add the weather response
             setMessages(prev => [...prev, {
               id: Date.now() + 1,
               text: `Here's the current weather in ${weatherData.location}:`,
@@ -107,7 +101,6 @@ const ChatApp = () => {
         }
       }
 
-      // Regular API request for other messages
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
@@ -128,7 +121,6 @@ const ChatApp = () => {
       }]);
     } catch (error) {
       console.error('Error:', error);
-      // Add error message
       setMessages(prev => [...prev, {
         id: Date.now() + 1,
         text: "I'm having trouble processing your request. Please try again later.",
