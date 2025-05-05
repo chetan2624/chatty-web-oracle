@@ -12,6 +12,7 @@ import SignUp from './components/SignUp';
 import ProtectedRoute from './components/ProtectedRoute';
 import Navigation from './components/Navigation';
 import NotFound from './pages/NotFound';
+import HomePage from './pages/HomePage';
 
 const queryClient = new QueryClient();
 
@@ -26,7 +27,8 @@ const App = () => {
             <div className="min-h-screen bg-[#f0f2f5]">
               <Navigation />
               <Routes>
-                <Route path="/" element={
+                <Route path="/" element={<HomePage />} />
+                <Route path="/chat" element={
                   <ProtectedRoute>
                     <ChatApp />
                   </ProtectedRoute>
