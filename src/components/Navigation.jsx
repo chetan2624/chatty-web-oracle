@@ -3,14 +3,28 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { LogOut, UserPlus, LogIn, MessageSquare } from 'lucide-react';
+import { toast } from "@/hooks/use-toast";
 
 const Navigation = () => {
   const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
   
   const handleLogout = () => {
-    logout();
-    navigate('/');
+    try {
+      logout();
+      toast({
+        title: "Success",
+        description: "You have been successfully logged out.",
+      });
+      navigate('/');
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to log out. Please try again.",
+      });
+      console.error("Logout error:", error);
+    }
   };
   
   return (
