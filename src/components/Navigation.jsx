@@ -36,6 +36,11 @@ const Navigation = () => {
       <div className="flex items-center gap-4">
         {currentUser ? (
           <>
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/20">
+              <span className="text-white">
+                {currentUser.name || currentUser.email || "User"}
+              </span>
+            </div>
             <Link
               to="/chat"
               className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
