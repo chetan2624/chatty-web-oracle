@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from '@/hooks/use-toast';
+import { User, Mail, Lock, KeyRound, UserPlus } from 'lucide-react';
 
 const SignUp = () => {
   const [name, setName] = useState('');
@@ -80,83 +81,98 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] p-4">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-lg overflow-hidden">
-        <div className="bg-gradient-to-r from-[#4e54c8] to-[#8f94fb] p-6 text-white text-center">
-          <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-[#4e54c8]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-            </svg>
+    <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] bg-gradient-to-br from-[#4e54c8] to-[#8f94fb] p-4">
+      <div className="w-full max-w-md bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl shadow-xl overflow-hidden">
+        <div className="p-8 text-white text-center">
+          <div className="w-20 h-20 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-inner border border-white/30">
+            <UserPlus className="h-10 w-10 text-white" />
           </div>
-          <h2 className="text-2xl font-bold">Sign Up</h2>
+          <h2 className="text-3xl font-bold mb-2">Create Account</h2>
+          <p className="text-white/80">Join our AI chatbot community</p>
         </div>
         
-        {error && <div className="bg-red-50 text-red-500 p-4 text-center font-medium">{error}</div>}
+        {error && (
+          <div className="mx-8 mb-4 bg-red-500/20 backdrop-blur-md border border-red-500/30 rounded-xl p-4 text-white text-center">
+            {error}
+          </div>
+        )}
         
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="p-8 space-y-5">
           <div className="space-y-2">
-            <Label htmlFor="name">Name</Label>
-            <Input
-              type="text"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              placeholder="Enter your name"
-              className="w-full"
-            />
+            <Label htmlFor="name" className="text-white/90 text-lg">Name</Label>
+            <div className="relative">
+              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60" size={18} />
+              <Input
+                type="text"
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                placeholder="Enter your name"
+                className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white/50 focus:ring-white/30"
+              />
+            </div>
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              placeholder="Enter your email"
-              className="w-full"
-            />
+            <Label htmlFor="email" className="text-white/90 text-lg">Email</Label>
+            <div className="relative">
+              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60" size={18} />
+              <Input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                placeholder="Enter your email"
+                className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white/50 focus:ring-white/30"
+              />
+            </div>
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              placeholder="Create a password"
-              className="w-full"
-            />
+            <Label htmlFor="password" className="text-white/90 text-lg">Password</Label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60" size={18} />
+              <Input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                placeholder="Create a password"
+                className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white/50 focus:ring-white/30"
+              />
+            </div>
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="confirmPassword">Confirm Password</Label>
-            <Input
-              type="password"
-              id="confirmPassword"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-              placeholder="Confirm your password"
-              className="w-full"
-            />
+            <Label htmlFor="confirmPassword" className="text-white/90 text-lg">Confirm Password</Label>
+            <div className="relative">
+              <KeyRound className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60" size={18} />
+              <Input
+                type="password"
+                id="confirmPassword"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                placeholder="Confirm your password"
+                className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white/50 focus:ring-white/30"
+              />
+            </div>
           </div>
           
           <Button 
             type="submit" 
-            className="w-full bg-[#4e54c8] hover:bg-[#3a3f9d]" 
+            className="w-full bg-white hover:bg-white/90 text-[#4e54c8] font-bold text-lg py-6 mt-2" 
             disabled={loading}
           >
             {loading ? 'Creating Account...' : 'Sign Up'}
           </Button>
         </form>
         
-        <div className="border-t p-6 text-center text-gray-600">
-          Already have an account? <Link to="/login" className="text-[#4e54c8] font-medium">Login</Link>
+        <div className="border-t border-white/10 p-8 text-center text-white/80">
+          Already have an account? <Link to="/login" className="text-white font-medium hover:text-white/90 underline underline-offset-4">Login</Link>
         </div>
       </div>
     </div>

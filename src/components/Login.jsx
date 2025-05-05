@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from '@/hooks/use-toast';
+import { Mail, Lock, LogIn } from 'lucide-react';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -59,57 +60,66 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] p-4">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-lg overflow-hidden">
-        <div className="bg-gradient-to-r from-[#4e54c8] to-[#8f94fb] p-6 text-white text-center">
-          <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-[#4e54c8]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
+    <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] bg-gradient-to-br from-[#4e54c8] to-[#8f94fb] p-4">
+      <div className="w-full max-w-md bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl shadow-xl overflow-hidden">
+        <div className="p-8 text-white text-center">
+          <div className="w-20 h-20 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-inner border border-white/30">
+            <LogIn className="h-10 w-10 text-white" />
           </div>
-          <h2 className="text-2xl font-bold">Login</h2>
+          <h2 className="text-3xl font-bold mb-2">Welcome Back!</h2>
+          <p className="text-white/80">Log in to continue your conversation</p>
         </div>
         
-        {error && <div className="bg-red-50 text-red-500 p-4 text-center font-medium">{error}</div>}
+        {error && (
+          <div className="mx-8 mb-4 bg-red-500/20 backdrop-blur-md border border-red-500/30 rounded-xl p-4 text-white text-center">
+            {error}
+          </div>
+        )}
         
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="p-8 space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              placeholder="Enter your email"
-              className="w-full"
-            />
+            <Label htmlFor="email" className="text-white/90 text-lg">Email</Label>
+            <div className="relative">
+              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60" size={18} />
+              <Input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                placeholder="Enter your email"
+                className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white/50 focus:ring-white/30"
+              />
+            </div>
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              placeholder="Enter your password"
-              className="w-full"
-            />
+            <Label htmlFor="password" className="text-white/90 text-lg">Password</Label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60" size={18} />
+              <Input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                placeholder="Enter your password"
+                className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:border-white/50 focus:ring-white/30"
+              />
+            </div>
           </div>
           
           <Button 
             type="submit" 
-            className="w-full bg-[#4e54c8] hover:bg-[#3a3f9d]" 
+            className="w-full bg-white hover:bg-white/90 text-[#4e54c8] font-bold text-lg py-6" 
             disabled={loading}
           >
             {loading ? 'Logging in...' : 'Login'}
           </Button>
         </form>
         
-        <div className="border-t p-6 text-center text-gray-600">
-          Don't have an account? <Link to="/signup" className="text-[#4e54c8] font-medium">Sign Up</Link>
+        <div className="border-t border-white/10 p-8 text-center text-white/80">
+          Don't have an account? <Link to="/signup" className="text-white font-medium hover:text-white/90 underline underline-offset-4">Sign Up</Link>
         </div>
       </div>
     </div>
